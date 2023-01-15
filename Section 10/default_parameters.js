@@ -71,3 +71,79 @@ const high5 = function () {
 };
 
 ["Sajan", "Pavan", "Pratik"].forEach(high5);
+
+//Functions Returning Functions
+
+const greet = function (greeting) {
+  console.log(greeting);
+  return function (name) {
+    console.log(`${greeting} ${name}`);
+  };
+};
+
+// const greet = function (greeting) {
+//   console.log(greeting);
+//   return (name) => {
+//     console.log(`${greeting} ${name}`);
+//   };
+// };
+
+const greetArr = (greeting) => (name) => {
+  console.log(`${greeting} ${name}`);
+};
+const greeterHey = greet("Hey");
+greeterHey("Sajan");
+greeterHey("Pavan");
+
+// greet("hello");
+// greet("hello")("Pratik");
+greetArr("Hello")("Sajan");
+
+//The call and apply Methods
+const AIR_INDIA = {
+  airline: "AIR INDIA",
+  iataCode: "AI",
+  bookings: [],
+  book(flightNum, name) {
+    console.log(
+      `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+    );
+    this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
+  },
+};
+
+const airtata = {
+  airline: "AIR INDIA(TATA)",
+  iataCode: "AIT",
+  bookings: [],
+  book(flightNum, name) {
+    console.log(
+      `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+    );
+  },
+};
+
+const book = AIR_INDIA.book;
+
+AIR_INDIA.book(1, "Sajan Bhosale");
+AIR_INDIA.book(11, "Pavan Kshirsagar");
+AIR_INDIA.book(111, "Pratik BahirWade");
+
+book.call(airtata, 2, "G N");
+book.call(AIR_INDIA, 2, "G N");
+
+console.log(AIR_INDIA.bookings);
+console.log(airtata.bookings);
+
+//Apply Method
+
+let flightData = [1, "Sajan Bhosale"];
+book.apply(airtata, flightData);
+flightData = [2, "G Bhosale"];
+book.apply(airtata, flightData);
+
+//a better Way or an alternative for APPLY METHOD
+
+book.call(airtata, ...flightData);
+
+/************The bind Method************* */
