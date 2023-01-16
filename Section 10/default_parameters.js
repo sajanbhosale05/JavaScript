@@ -147,3 +147,72 @@ book.apply(airtata, flightData);
 book.call(airtata, ...flightData);
 
 /************The bind Method************* */
+// book.call(airtata, 2, "G N");
+
+const bookAT = book.bind(airtata);
+const booAI = book.bind(AIR_INDIA);
+const booAI23 = book.bind(AIR_INDIA, 1); //flightNum preset
+// booAI(1, "Sajan");
+// bookAT(1, "Sajan Bhosale");
+booAI23("Sajan");
+//With EventListener
+AIR_INDIA.planes = 300;
+AIR_INDIA.buyPlane = function () {
+  console.log(`Planes before Purchase:${this}`);
+  this.planes++;
+  console.log(this.planes);
+};
+
+// console.log(AIR_INDIA);
+const btnPurchase = document.getElementById("purchase");
+
+btnPurchase.addEventListener("click", AIR_INDIA.buyPlane.bind(AIR_INDIA));
+
+//Partial Application
+
+//General function=>
+const addTax = (rate, value) => value + value * rate;
+console.log(addTax(0.1, 200));
+
+const addVat = addTax.bind(null, 0.23); //Expanding this will become|| addVat=value=>value+value*0.23;
+
+console.log(addVat(100));
+
+const addTaxRate = function (rate) {
+  return function (value) {
+    return value + value * rate;
+  };
+};
+
+const addVatRate = addTaxRate(0.23);
+console.log(addVatRate(100));
+console.log(addVatRate(23));
+
+//Immediately Invoked Function Expressions(IIFE)
+
+//normal functions=>
+function myFunction() {
+  console.log("I am a Normal function..!!");
+}
+
+const normalFunc = function () {
+  console.log("I am also a Normal function..!!");
+};
+
+//IIFE
+(function () {
+  console.log("I am a Immediately invoked function expression..!!");
+})();
+
+(() =>
+  console.log(
+    "I am also a Immediately invoked function expression using arrow function..!!"
+  ))();
+
+// {
+//   const isPrivate = 1;
+//   var notPrivate = 1;
+// }
+
+// // console.log(isPrivate);
+// console.log(notPrivate);
