@@ -216,3 +216,50 @@ const normalFunc = function () {
 
 // // console.log(isPrivate);
 // console.log(notPrivate);
+
+/**************CLOSURES***************** */
+
+const secureBooking = function () {
+  let passengerCount = 0;
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} Passanger's`);
+  };
+};
+
+const booker = secureBooking();
+booker();
+
+// console.dir(booker);
+
+let s;
+const g = function () {
+  const a = 12;
+  s = function () {
+    console.log("S", a * 2);
+  };
+};
+
+const n = function () {
+  const b = 12;
+  s = function () {
+    console.log("B", b * 2);
+  };
+};
+
+g();
+s();
+n();
+s();
+
+// console.dir(s);
+
+const boardPassanger = function (n, wait) {
+  // const perGrouup = n / 3;
+  setTimeout(function () {
+    console.log(`All the ${n} passanger's are now being boarded..!!`);
+    console.log(`There are 3 Groups, Each with ${perGrouup} passangers`);
+  }, wait * 1000);
+};
+const perGrouup = 400;
+boardPassanger(180, 5);
