@@ -29,3 +29,15 @@ const poll = {
 const btnPoll = document.getElementById("answer");
 
 btnPoll.addEventListener("click", poll.registerNewAnswer.bind(poll));
+
+//Practice part 2=>
+(function () {
+  const header = document.querySelector("h1");
+  header.style.color = "black";
+
+  //this is because of closures
+  document.querySelector("body").addEventListener("click", function () {
+    header.style.color = "yellow";
+  });
+})();
+
