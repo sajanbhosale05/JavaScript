@@ -131,5 +131,36 @@ console.log(withdrawals);
 //reduce returns all array elements down to one single value Eg. Adding all array elements together.
 
 const balance = movements.reduce(function (accumulator, curEle, index, arr) {
-  return acc + curEle;
-});
+  console.log(`Iteration ${index}: ${accumulator}`);
+  return accumulator + curEle;
+}, 0);
+
+console.log(balance);
+
+//same using for of
+
+// for (curEle of movements) {
+//   let balance = 0;
+//   console.log(balance, curEle);
+//   balance += curEle;
+//   console.log(balance);
+// }
+
+const calcBalance = function (movements) {
+  const balance = movements.reduce(
+    (accumulator, movement) => accumulator + movement,
+    0
+  );
+};
+
+//Maximum value of movements
+
+const maxMov = movements.reduce(function (accumulator, movement) {
+  if (accumulator > movement) {
+    return accumulator;
+  } else {
+    return movement;
+  }
+}, movements[0]);
+
+console.log(maxMov);
