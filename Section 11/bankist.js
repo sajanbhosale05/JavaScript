@@ -99,3 +99,5 @@ const calcBalanceDisplay = function (movements) {
   );
   labelBalance.textContent = `₹${balance}`;
 };
+
+//Lets's build the Banking application with Array data structure only..
