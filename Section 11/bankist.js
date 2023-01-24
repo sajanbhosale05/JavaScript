@@ -100,4 +100,23 @@ const calcBalanceDisplay = function (movements) {
   labelBalance.textContent = `₹${balance}`;
 };
 
-//Lets's build the Banking application with Array data structure only..
+const calcDisplaySummery = function (movement) {
+  const incomes = movement
+    .filter((movement) => movement > 0)
+    .reduce((accumulator, movement) => accumulator + movement, 0);
+
+  const expenses = movement
+    .filter((movement) => movement < 0)
+    .reduce((accumulator, movement) => accumulator + movement, 0);
+  labelSumIn.textContent = `₹${incomes}`;
+  labelSumOut.textContent = `₹${Math.abs(expenses)}`;
+
+  const interest = movement
+    .filter((movement) => movement > 0)
+    .map((deposits) => (deposits * 2) / 100)
+    .reduce((accumulator, interest) => accumulator + interest, 0);
+
+  labelSumInterest.textContent = `₹${interest}`;
+};
+
+calcDisplaySummery(account1.movements);

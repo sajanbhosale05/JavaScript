@@ -164,3 +164,5 @@ const maxMov = movements.reduce(function (accumulator, movement) {
 }, movements[0]);
 
 console.log(maxMov);
+
+//Method Chaining..
