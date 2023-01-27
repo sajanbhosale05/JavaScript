@@ -28,12 +28,19 @@ const account3 = {
 
 const account4 = {
   owner: "Pratik Bahirwade",
-  movements: [4300, 10000, 7000, 50, 90],
+  movements: [43000, 10000, 70000, 50, 90],
   interestRate: 1,
   pin: 4444,
 };
 
-const accounts = [account1, account2, account3, account4];
+const account5 = {
+  owner: "Temp Account",
+  movements: [4300, 10000, 7000, 50, 90],
+  interestRate: 1,
+  pin: 5555,
+};
+
+const accounts = [account1, account2, account3, account4, account5];
 
 // Elements
 const labelWelcome = document.querySelector(".welcome");
@@ -63,13 +70,14 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 const displayMovements = function (movements) {
   containerMovements.innerHTML = "";
-  movements.forEach(function (mov, i) {
-    const type = mov > 0 ? "deposit" : "withdrawal";
-
+  movements.forEach(function (movement, i) {
+    const type = movement > 0 ? "deposit" : "withdrawal";
+    const typeT = typeof movement === "string" ? "transfer" : type;
+    // console.log(type, " ", typeT);
     const html = `<div class="movements__row">
     <div class="movements__type 
-    movements__type--${type}">${i + 1}${type}</div>
-    <div class="movements__value">${mov}</div>
+    movements__type--${type}">${i + 1} ${typeT}</div>
+    <div class="movements__value">${movement}</div>
     </div>`;
 
     containerMovements.insertAdjacentHTML("afterbegin", html);
@@ -182,7 +190,7 @@ btnTransfer.addEventListener("click", function (event) {
     currentAccount.balance >= amount &&
     receiverAcc.username !== currentAccount.username
   ) {
-    currentAccount.movements.push(-amount);
+    currentAccount.movements.push(String(-amount));
     receiverAcc.movements.push(amount);
     //Updating UI
     updateUI(currentAccount);
@@ -197,16 +205,26 @@ btnTransfer.addEventListener("click", function (event) {
   console.log(-amount, receiverAcc);
 });
 
-//Let's go and build all the remaining things
-const { deposits, withdrawals } = accounts
-  .flatMap((acc) => acc.movements)
-  .reduce(
-    (sums, cur) => {
-      // cur > 0 ? (sums.deposits += cur) : (sums.withdrawals += cur);
-      sums[cur > 0 ? "deposits" : "withdrawals"] += cur;
-      return sums;
-    },
-    { deposits: 0, withdrawals: 0 }
-  );
+//findIndex Method:
 
-console.log(deposits, withdrawals);
+btnClose.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      (account) => account.username === currentAccount.username
+    );
+
+    inputCloseUsername.blur();
+    inputClosePin.blur();
+    console.log(index);
+    accounts.splice(index, 1);
+    alert("Your Account deleted successfully..!!");
+    //Hide UI
+    containerApp.style.opacity = 0;
+    labelWelcome.innerHTML = "Log in to get started";
+  }
+});
