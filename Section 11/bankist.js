@@ -71,8 +71,15 @@ const inputClosePin = document.querySelector(".form__input--pin");
 const displayMovements = function (movements) {
   containerMovements.innerHTML = "";
   movements.forEach(function (movement, i) {
-    const type = movement > 0 ? "deposit" : "withdrawal";
-    const typeT = typeof movement === "string" ? "transfer" : type;
+    let type = movement > 0 ? "deposit" : "withdrawal";
+    let typeT = typeof movement === "string" ? "transfer" : type;
+    typeT =
+      typeT === "transfer" && movement.includes("L") ? "Loan" : "transfer";
+
+    if (typeT === "Loan") {
+      type = "deposit";
+      movement = Number(movement.slice(0, -1));
+    }
     // console.log(type, " ", typeT);
     const html = `<div class="movements__row">
     <div class="movements__type 
@@ -99,10 +106,17 @@ createUser(accounts);
 
 //display balance
 const calcBalanceDisplay = function (accounts) {
-  const balance = accounts.movements.reduce(
-    (accumulator, movement) => accumulator + movement,
-    0
-  );
+  const balance = accounts.movements.reduce((accumulator, movement) => {
+    // console.log("Type of movement", typeof movement);
+    if (typeof movement === "string" && movement.includes("L")) {
+      movement = Number(movement.slice(0, -1));
+      // console.log(`${movement} and tye of movement ${typeof movement}`);
+    }
+
+    console.log(accumulator);
+    console.log(movement);
+    return (accumulator += Number(movement));
+  }, 0);
   accounts.balance = balance;
   labelBalance.textContent = `₹${balance}`;
 };
@@ -228,3 +242,59 @@ btnClose.addEventListener("click", (event) => {
     labelWelcome.innerHTML = "Log in to get started";
   }
 });
+
+//Some and Every:
+
+//some method:
+console.log(account1.movements.some((movement) => movement === 100000));
+
+const anyDeposits = account1.movements.some((movement) => movement > 0);
+console.log(anyDeposits);
+
+//Loan functionality:
+btnLoan.addEventListener("click", function (event) {
+  event.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((movement) => movement >= amount * 0.1)
+  ) {
+    currentAccount.movements.push(`${amount}L`);
+
+    updateUI(currentAccount);
+    alert("Your loan request has been approved..!!");
+    inputLoanAmount.blur();
+  }
+});
+
+//Every method:
+
+//returns true when every element in array satiesfies the condition mentioned.
+
+console.log(account1.movements.every((movement) => movement > 0));
+console.log(account2.movements.every((movement) => movement > 0));
+
+// flat and flatMap:
+
+// const arr = [[1, 2, 3], 4, [5, 6, 7]];
+
+// console.log(arr.flat());
+
+// const arrDeep = [[1, 2], [2, 3, [5, 6], 7], 8, 9];
+// console.log(arrDeep.flat());
+// console.log(arrDeep.flat(2));
+
+//Using flat:
+const overAllBalance = accounts
+  .map((account) => account.movements)
+  .flat()
+  .reduce((account, movement) => account + movement, 0);
+
+console.log(overAllBalance);
+
+//Using flatMap:
+const overAllBalance1 = accounts
+  .flatMap((account) => account.movements)
+  .reduce((account, movement) => account + movement, 0);
+
+console.log(overAllBalance1);
